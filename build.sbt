@@ -1,8 +1,8 @@
 name := "scalatest-json-jsonassert"
 organization := "com.stephenn"
-version := "0.0.1-SNAPSHOT"
+version := "0.0.1"
 
-scalaVersion := "2.11.11"
+scalaVersion := "2.11.12"
 
 libraryDependencies ++= Seq(
 	"org.skyscreamer" % "jsonassert" % "1.5.0",
