@@ -3,7 +3,8 @@ Scalatest-json-matchers
 
 Scalatest matchers for Json with appropriate equality and descriptive error messages.
 
-=== install
+install
+---
 
 ```
 libraryDependencies ++= Seq(
@@ -11,7 +12,8 @@ libraryDependencies ++= Seq(
 )
 ```
 
-=== usage
+usage
+---
 
 ```
 it("test some json output") {
