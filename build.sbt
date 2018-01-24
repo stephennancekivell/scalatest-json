@@ -1,6 +1,6 @@
 name := "scalatest-json-jsonassert"
 organization := "com.stephenn"
-version := "0.0.2"
+version := "0.0.3-SNAPSHOT"
 
 scalaVersion := "2.11.12"
 

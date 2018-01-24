@@ -5,7 +5,7 @@ import org.scalatest.{FunSpec, ShouldMatchers}
 class ExampleSpec extends FunSpec with ShouldMatchers with JsonMatchers {
 
   ignore("JsonMatchers usage") {
-    it("should pass matching json") {
+    it("should pass matching json with different spacing and order") {
       val input = """
         |{
         | "some": "valid json",
@@ -37,6 +37,20 @@ class ExampleSpec extends FunSpec with ShouldMatchers with JsonMatchers {
                      """.stripMargin
 
       input should matchJson(expected)
+//
+//      Fails
+//
+//      Json did not match {
+//      "someField": "valid json"
+//      } did not match {
+//      "someField": "different json"
+//      }
+//
+//      Json Diff:
+//        someField
+//      Expected: different json
+//        got: valid json
+
     }
 
     it("should fail on very different json explaining why") {
@@ -55,17 +69,6 @@ class ExampleSpec extends FunSpec with ShouldMatchers with JsonMatchers {
                      """.stripMargin
 
       input should matchJson(expected)
-    }
-
-    it("test some json output") {
-      val json: String = ???
-
-      json should matchJson("""
-          |{
-          |   "foo": "bar",
-          |  "baz":["bee","boo"]
-          |}
-        """.stripMargin)
     }
   }
 }
