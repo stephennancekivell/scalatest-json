@@ -1,5 +1,6 @@
 Scalatest-json
 ===
+[![Build Status](https://travis-ci.org/stephennancekivell/scalatest-json.svg?branch=master)](https://travis-ci.org/stephennancekivell/scalatest-json)
 
 Scalatest matchers for Json with appropriate equality and descriptive error messages.
 
