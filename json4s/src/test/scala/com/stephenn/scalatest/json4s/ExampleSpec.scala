@@ -1,24 +1,24 @@
-package com.stephenn.scalatest.jsonassert
+package com.stephenn.scalatest.json4s
 
-import org.scalatest.{FunSpec, ShouldMatchers}
+import org.scalatest.{FunSpec, Matchers}
 
-class ExampleSpec extends FunSpec with ShouldMatchers with JsonMatchers {
+class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
 
   ignore("JsonMatchers usage") {
     it("should pass matching json with different spacing and order") {
       val input = """
-        |{
-        | "some": "valid json",
-        | "with": ["json", "content"]
-        |}
-      """.stripMargin
-
-      val expected = """
                     |{
-                    | "with": ["json", "content"],
-                    |     "some":   "valid json"
+                    | "some": "valid json",
+                    | "with": ["json", "content"]
                     |}
                   """.stripMargin
+
+      val expected = """
+                       |{
+                       | "with": ["json", "content"],
+                       |     "some":   "valid json"
+                       |}
+                     """.stripMargin
 
       input should matchJson(expected)
     }
@@ -37,19 +37,18 @@ class ExampleSpec extends FunSpec with ShouldMatchers with JsonMatchers {
                      """.stripMargin
 
       input should matchJson(expected)
-//
-//      Fails
-//
-//      Json did not match {
-//      "someField": "valid json"
-//      } did not match {
-//      "someField": "different json"
-//      }
-//
-//      Json Diff:
-//        someField
-//      Expected: different json
-//        got: valid json
+      //
+      //      Fails
+      //
+      //      Json did not match {
+      //      "someField": "valid json"
+      //      } did not match {
+      //      "someField": "different json"
+      //      }
+      //
+      //      Json Diff:
+      //        Changed:
+      //      {"someField":"different json"}
 
     }
 

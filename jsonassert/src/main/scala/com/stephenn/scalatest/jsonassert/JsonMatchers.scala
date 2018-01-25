@@ -10,7 +10,7 @@ import org.scalatest.matchers.Matcher
 trait JsonMatchers {
 
   /**
-    * A matcher that checks whether the given object is or can be parsed into a json value.
+    * Checks if the given json objects are equivalent.
     */
   def matchJson(right: String): Matcher[String] =
     Matcher[String] { left =>

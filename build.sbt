@@ -1,12 +1,9 @@
-name := "scalatest-json-jsonassert"
 organization := "com.stephenn"
-version := "0.0.3-SNAPSHOT"
-
-scalaVersion := "2.11.12"
-
-libraryDependencies ++= Seq(
-	"org.skyscreamer" % "jsonassert" % "1.5.0",
-	"org.scalatest" %% "scalatest" % "2.2.6"
-)
-
 publishTo := sonatypePublishTo.value
+
+lazy val root = (project in file("."))
+  .aggregate(jsonassert, json4s)
+
+lazy val jsonassert = project
+
+lazy val json4s = project
