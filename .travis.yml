@@ -1,0 +1,9 @@
+language: scala
+scala:
+   - 2.11.12
+
+cache:
+  directories:
+    - $HOME/.m2/repository
+    - $HOME/.sbt
+    - $HOME/.ivy2
