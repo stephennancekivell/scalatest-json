@@ -44,5 +44,13 @@ class JsonMatchersSpec extends FunSpec with Matchers {
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe "Could not parse json \"{\"a\": nope]}\" did not equal \"{}\""
     }
+
+    it("should match a json object to a json string") {
+      import org.json4s.native.JsonMethods._
+      val matchResult = JsonMatchers
+        .matchJsonString("""{"b":1,"a":0}""")
+        .apply(parse("""{"a":0, "b":1}"""))
+      matchResult.matches shouldBe true
+    }
   }
 }
