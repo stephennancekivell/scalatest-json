@@ -1,13 +1,16 @@
 
 lazy val root = (project in file("."))
   .settings(commonSettings)
-  .aggregate(jsonassert, json4s)
+  .aggregate(jsonassert, json4s, playJson)
 
 lazy val json4s = (project in file("json4s"))
 	.settings(commonSettings)
 
 lazy val jsonassert = (project in file("jsonassert"))
 	.settings(commonSettings)
+
+lazy val playJson = (project in file("play-json"))
+  .settings(commonSettings)
 
 lazy val commonSettings = Seq(
   organization := "com.stephenn",
@@ -20,5 +23,21 @@ lazy val commonSettings = Seq(
                              url("https://stephenn.com"))),
   licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
-  publishTo := sonatypePublishTo.value
+  publishTo := sonatypePublishTo.value,
+  scalacOptions ++= Seq(
+    "-deprecation",
+    "-encoding", "UTF-8",       // yes, this is 2 args
+    "-feature",
+    "-language:existentials",
+    "-language:higherKinds",
+    "-language:implicitConversions",
+    "-unchecked",
+    "-Xfatal-warnings",
+    "-Xlint",
+    "-Yno-adapted-args",
+    "-Ywarn-numeric-widen",
+    "-Ywarn-value-discard",
+    "-Xfuture",
+    "-Ywarn-unused-import"
+  )
 )
