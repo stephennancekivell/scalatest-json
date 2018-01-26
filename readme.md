@@ -7,16 +7,20 @@ Scalatest matchers for Json with appropriate equality and descriptive error mess
 install
 ---
 
+Add the dependency you want
 ```
-libraryDependencies ++= Seq(
-    "com.stephenn" %% "scalatest-json-jsonassert" % "0.0.2"
-)
+libraryDependencies += "com.stephenn" %% "scalatest-json-jsonassert" % "0.0.2"
+libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.0.1"
 ```
 
 usage
 ---
+Your scalatest spec should extend or import `JsonMatchers`
 
 ```
+class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
+
+  describe("JsonMatchers usage") {
     it("should pass matching json with different spacing and order") {
       val input = """
         |{
@@ -64,4 +68,15 @@ usage
 //        got: valid json
 
     }
+  }
+}
+
 ```
+
+Publishing
+---
+1) bump version in module to non snaphsot
+2) commit and tag git tag json4s-0.0.1 1854f10
+3) sbt ++2.12.4 json4s/publishSigned
+4) sbt ++2.12.4 json4s/sonatypeRelease
+4) bump version to snapshot
