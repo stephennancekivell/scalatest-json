@@ -77,6 +77,6 @@ Publishing
 ---
 1) bump version in module to non snaphsot
 2) commit and tag `git tag json4s-0.0.1` `git push --tags`
-3) sbt ++2.12.4 json4s/publishSigned
-4) sbt ++2.12.4 json4s/sonatypeRelease
+3) sbt +json4s/publishSigned
+4) sbt sonatypeReleaseAll
 4) bump version to snapshot
