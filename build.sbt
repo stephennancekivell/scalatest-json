@@ -12,6 +12,9 @@ lazy val jsonassert = (project in file("jsonassert"))
 lazy val playJson = (project in file("play-json"))
   .settings(commonSettings)
 
+lazy val circe = (project in file("circe"))
+  .settings(commonSettings)
+
 lazy val commonSettings = Seq(
   organization := "com.stephenn",
   homepage := Some(url("https://github.com/stephennancekivell/scalatest-json")),
