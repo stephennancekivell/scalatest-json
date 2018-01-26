@@ -10,7 +10,8 @@ install
 Add the dependency you want
 ```
 libraryDependencies += "com.stephenn" %% "scalatest-json-jsonassert" % "0.0.2"
-libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.0.1"
+libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.0.2"
+libraryDependencies += "com.stephenn" %% "scalatest-play-json" % "0.0.1"
 ```
 
 usage
