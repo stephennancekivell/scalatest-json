@@ -29,20 +29,37 @@ class JsonMatchersSpec extends FunSpec with Matchers {
     it("should fail when left has extra fields") {
       val matchResult = JsonMatchers.matchJson("""{"l":1}""").apply("{}")
       matchResult.matches shouldBe false
-      matchResult.failureMessage shouldBe "Json did not match {} did not match {\"l\":1}\n\nJson Diff:\n\nExpected: l\n     but none found\n"
+      matchResult.failureMessage shouldBe
+        """
+          |Json did not match "{}" did not match "{"l":1}"
+          |
+          |Json Diff:
+          |"
+          |Expected: l
+          |     but none found
+          |"
+        """.stripMargin.trim
     }
 
     it("should fail when right has extra fields") {
       val matchResult = JsonMatchers.matchJson("{}").apply("""{"r":0}""")
       matchResult.matches shouldBe false
-      matchResult.failureMessage shouldBe "Json did not match {\"r\":0} did not match {}\n\nJson Diff:\n\nUnexpected: r\n"
+      matchResult.failureMessage shouldBe
+        """
+          |Json did not match "{"r":0}" did not match "{}"
+          |
+          |Json Diff:
+          |"
+          |Unexpected: r
+          |"
+        """.stripMargin.trim
     }
 
     it("should fail on invalid json") {
       val matchResult =
         JsonMatchers.matchJson("{}").apply("""{"a": [1  "two"]}""")
       matchResult.matches shouldBe false
-      matchResult.failureMessage shouldBe "Couldnt parse json {\"a\": [1  \"two\"]} did not equal {}"
+      matchResult.failureMessage shouldBe """Couldnt parse json "{"a": [1  "two"]}" did not equal "{}""""
     }
   }
 }

@@ -1,6 +1,5 @@
 package com.stephenn.scalatest.jsonassert
 
-import org.scalactic.Prettifier
 import org.scalatest.matchers.MatchResult
 import org.skyscreamer.jsonassert.{JSONCompare, JSONCompareMode}
 
@@ -24,7 +23,7 @@ trait JsonMatchers {
             rawFailureMessage = "Couldnt parse json {0} did not equal {1}",
             rawNegatedFailureMessage = "Json should not have matched {0} {1}",
             args = Array(left.trim, right.trim)
-          ).copy(prettifier = noopPrettifier)
+          )
         case Success(jSONCompareResult) =>
           MatchResult(
             matches = jSONCompareResult.passed(),
@@ -33,13 +32,8 @@ trait JsonMatchers {
             rawNegatedFailureMessage =
               "Json should not have matched {0} matched {1}\n\nJson Diff:\n{2}",
             args = Array(left.trim, right.trim, jSONCompareResult.getMessage)
-          ).copy(prettifier = noopPrettifier)
+          )
       }
-    }
-
-  private val noopPrettifier: Prettifier =
-    new Prettifier {
-      override def apply(v1: Any): String = v1.toString
     }
 }
 
