@@ -20,7 +20,7 @@ trait JsonMatchers {
         case Failure(_) =>
           MatchResult(
             matches = false,
-            rawFailureMessage = "Couldnt parse json {0} did not equal {1}",
+            rawFailureMessage = "Could not parse json {0} did not equal {1}",
             rawNegatedFailureMessage = "Json should not have matched {0} {1}",
             args = Array(left.trim, right.trim)
           )

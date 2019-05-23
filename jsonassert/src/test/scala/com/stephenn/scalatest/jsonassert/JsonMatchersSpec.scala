@@ -59,7 +59,7 @@ class JsonMatchersSpec extends FunSpec with Matchers {
       val matchResult =
         JsonMatchers.matchJson("{}").apply("""{"a": [1  "two"]}""")
       matchResult.matches shouldBe false
-      matchResult.failureMessage shouldBe """Couldnt parse json "{"a": [1  "two"]}" did not equal "{}""""
+      matchResult.failureMessage shouldBe """Could not parse json "{"a": [1  "two"]}" did not equal "{}""""
     }
   }
 }
