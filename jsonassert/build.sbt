@@ -4,10 +4,10 @@ version := "0.0.4-SNAPSHOT"
 
 scalaVersion := "2.11.12"
 
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-RC2")
 
 libraryDependencies ++= Seq(
 	"org.skyscreamer" % "jsonassert" % "1.5.0",
-	"org.scalatest" %% "scalatest" % "3.0.4"
+	"org.scalatest" %% "scalatest" % "3.0.8-RC4"
 )
 

@@ -1,4 +1,3 @@
-
 name := "scalatest-play-json"
 
 version := "0.0.2-SNAPSHOT"

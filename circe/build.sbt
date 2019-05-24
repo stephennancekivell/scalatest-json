@@ -7,7 +7,7 @@ scalaVersion := "2.11.12"
 crossScalaVersions := Seq("2.11.12", "2.12.8")
 
 libraryDependencies ++= Seq(
-	"org.scalatest" %% "scalatest" % "3.0.4",
+  "org.scalatest" %% "scalatest" % "3.0.8-RC4",
   "org.gnieh" %% "diffson-circe" % "2.2.5"
 )
 
