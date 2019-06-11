@@ -4,10 +4,9 @@ version := "0.0.3-SNAPSHOT"
 
 scalaVersion := "2.11.12"
 
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0")
 
 libraryDependencies ++= Seq(
-	"org.json4s" %% "json4s-native" % "3.5.3",
-	"org.scalatest" %% "scalatest" % "3.0.4"
+  "org.json4s" %% "json4s-native" % "3.6.6",
+  "org.scalatest" %% "scalatest" % "3.0.8"
 )
-

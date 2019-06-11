@@ -22,7 +22,7 @@ trait JsonMatchers {
             matches = false,
             rawFailureMessage = "Could not parse json {0} did not equal {1}",
             rawNegatedFailureMessage = "Json should not have matched {0} {1}",
-            args = Array(left.trim, right.trim)
+            args = IndexedSeq(left.trim, right.trim)
           )
         case Success(jSONCompareResult) =>
           MatchResult(
@@ -31,7 +31,8 @@ trait JsonMatchers {
               "Json did not match {0} did not match {1}\n\nJson Diff:\n{2}",
             rawNegatedFailureMessage =
               "Json should not have matched {0} matched {1}\n\nJson Diff:\n{2}",
-            args = Array(left.trim, right.trim, jSONCompareResult.getMessage)
+            args =
+              IndexedSeq(left.trim, right.trim, jSONCompareResult.getMessage)
           )
       }
     }
