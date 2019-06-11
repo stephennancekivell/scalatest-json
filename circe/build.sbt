@@ -2,9 +2,9 @@ name := "scalatest-circe"
 
 version := "0.0.2-SNAPSHOT"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.12.8")
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.8",
