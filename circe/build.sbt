@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   "org.gnieh" %% "diffson-circe" % "2.2.5"
 )
 
-val circeVersion = "0.9.0"
+val circeVersion = "0.9.3"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
