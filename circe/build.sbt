@@ -8,7 +8,7 @@ crossScalaVersions := Seq("2.12.8")
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.8",
-  "org.gnieh" %% "diffson-circe" % "2.2.6"
+  "org.gnieh" %% "diffson-circe" % "3.1.1"
 )
 
 val circeVersion = "0.11.1"
