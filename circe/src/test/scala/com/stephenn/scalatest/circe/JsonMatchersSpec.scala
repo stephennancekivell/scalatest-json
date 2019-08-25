@@ -72,7 +72,7 @@ class JsonMatchersSpec extends FunSpec with Matchers {
       import io.circe.parser._
       val matchResult = JsonMatchers
         .matchJsonString("""{"b":1,"a":0}""")
-        .apply(parse("""{"a":0, "b":1}""").right.get)
+        .apply(parse("""{"a":0, "b":1}""").toOption.get)
       matchResult.matches shouldBe true
     }
   }
