@@ -55,9 +55,17 @@ trait JsonMatchers {
   )
 
   private def diffMessage(left: Json, right: Json): String = {
-    import gnieh.diffson.circe._
+    import diffson._
+    import diffson.lcs._
+    import diffson.circe._
+    import diffson.jsonpatch.lcsdiff._
+    import io.circe._
+    import io.circe.syntax._
 
-    JsonDiff.diff(left, right, remember = false).toString()
+    implicit val lcs = new Patience[Json]
+
+    diff(left, right).asJson.toString
+
   }
 }
 
