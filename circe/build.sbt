@@ -1,6 +1,6 @@
 name := "scalatest-circe"
 
-version := "0.0.2-SNAPSHOT"
+version := "0.0.2-M1"
 
 scalaVersion := "2.12.8"
 
