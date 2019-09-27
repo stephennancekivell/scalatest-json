@@ -56,9 +56,14 @@ trait JsonMatchers {
   )
 
   private def diffMessage(left: JsValue, right: JsValue): String = {
-    import gnieh.diffson.playJson._
+    import diffson._
+    import diffson.lcs._
+    import diffson.playJson._
+    import diffson.jsonpatch.lcsdiff._
 
-    JsonDiff.diff(left, right, remember = false).toString()
+    implicit val lcs = new Patience[JsValue]
+
+    diff(left, right).toString
   }
 }
 

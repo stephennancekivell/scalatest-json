@@ -17,9 +17,11 @@ class JsonMatchersSpec extends FunSpec with Matchers {
       val matchResult = JsonMatchers.matchJson("{  }").apply("  {}  ")
       matchResult.matches shouldBe true
 
-      Seq("{}" -> " { }",
-          " [ ] " -> "[]",
-          """{"a":0, "b":1}""" -> """{"b":1,"a":0}""").foreach {
+      Seq(
+        "{}" -> " { }",
+        " [ ] " -> "[]",
+        """{"a":0, "b":1}""" -> """{"b":1,"a":0}"""
+      ).foreach {
         case (left, right) =>
           val matchResult = JsonMatchers.matchJson(right).apply(left)
           matchResult.matches shouldBe true
@@ -34,11 +36,7 @@ class JsonMatchersSpec extends FunSpec with Matchers {
           |Json did not match "{}" did not match "{"l":1}"
           |
           |Json Diff:
-          |"[ {
-          |  "op" : "add",
-          |  "path" : "/l",
-          |  "value" : 1
-          |} ]"
+          |"JsonPatch(List(Add(Chain(Left(l)),1)))"
         """.stripMargin.trim
     }
 
@@ -50,10 +48,7 @@ class JsonMatchersSpec extends FunSpec with Matchers {
           |Json did not match "{"r":0}" did not match "{}"
           |
           |Json Diff:
-          |"[ {
-          |  "op" : "remove",
-          |  "path" : "/r"
-          |} ]"
+          |"JsonPatch(List(Remove(Chain(Left(r)),None)))"
         """.stripMargin.trim
     }
 
