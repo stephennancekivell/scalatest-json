@@ -1,8 +1,9 @@
 package com.stephenn.scalatest.jsonassert
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
+class ExampleSpec extends AnyFunSpec with Matchers with JsonMatchers {
 
   ignore("JsonMatchers usage") {
     it("should pass matching json with different spacing and order") {
