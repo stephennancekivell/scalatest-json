@@ -1,8 +1,9 @@
 package com.stephenn.scalatest.jsonassert
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class JsonMatchersSpec extends FunSpec with Matchers {
+class JsonMatchersSpec extends AnyFunSpec with Matchers {
   describe("JsonMatchers") {
     it("should pass when json is the same") {
       Seq("{}" -> "{}", "[]" -> "[]", "0" -> "0").foreach {
