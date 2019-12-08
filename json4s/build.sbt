@@ -1,6 +1,6 @@
 name := "scalatest-json4s"
 
-version := "0.0.4-SNAPSHOT"
+version := "0.0.4"
 
 scalaVersion := "2.12.10"
 
