@@ -1,6 +1,9 @@
 
 lazy val root = (project in file("."))
-  .settings(commonSettings)
+  .settings(
+    commonSettings,
+    publish / skip := true
+  )
   .aggregate(jsonassert, json4s, playJson, circe)
 
 lazy val json4s = (project in file("json4s"))
