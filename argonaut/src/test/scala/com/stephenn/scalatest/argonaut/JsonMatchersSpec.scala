@@ -63,23 +63,23 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
     it("should pass a golden test") {
       val result = JsonMatchers
-        .matchJsonGolden(""" {"a":"value"} """.stripMargin)
-        .apply(Foo("value"))
+        .matchJsonGolden(Foo("value"))
+        .apply(""" {"a":"value"} """)
       result.matches shouldBe true
     }
 
     it("should error if the json string isnt valid json") {
       val result = JsonMatchers
-        .matchJsonGolden("not a valid json string")
-        .apply(Foo("value"))
+        .matchJsonGolden(Foo("value"))
+        .apply("not a valid json string")
       result.matches shouldBe false
       result.failureMessage shouldBe """Could not parse json string. "not a valid json string". ParsingFailure: "Unexpected content found: not a valid json string""""
     }
 
     it("should error if the json decodes but doesnt match the value") {
       val result = JsonMatchers
-        .matchJsonGolden(""" {"a":"different value"} """.stripMargin)
-        .apply(Foo("value"))
+        .matchJsonGolden(Foo("value"))
+        .apply(""" {"a":"different value"} """)
       result.matches shouldBe false
       result.failureMessage shouldBe
         """Json did not match "{"a":"different value"}" did not match "Foo(value)""""

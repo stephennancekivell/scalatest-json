@@ -43,9 +43,9 @@ trait JsonMatchers {
     }
 
   def matchJsonGolden[T: CodecJson: ClassTag](
-    jsonString: String
-  ): Matcher[T] = {
-    Matcher[T] { value =>
+      value: T
+  ): Matcher[String] = {
+    Matcher[String] { jsonString: String =>
       val valueAsJson = value.asJson
 
       Parse.parse(jsonString) match {
