@@ -1,5 +1,6 @@
 package com.stephenn.scalatest.circe
 
+import io.circe.{Decoder, Encoder}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -69,6 +70,22 @@ class ExampleSpec extends AnyFunSpec with Matchers with JsonMatchers {
                      """.stripMargin
 
       input should matchJson(expected)
+    }
+
+    it("can compare json and a model") {
+      case class Foo(sameField: String)
+      implicit val encoder = Encoder.forProduct1("someField")(Foo.unapply)
+      implicit val decoder = Decoder.forProduct1("someField")(Foo.apply)
+
+      val json = """
+                    |{
+                    | "someField": "valid json"
+                    |}
+                  """.stripMargin
+
+      val model = Foo("valid json")
+
+      model should matchJsonGolden(json)
     }
   }
 }

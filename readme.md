@@ -77,6 +77,27 @@ class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
 
 ```
 
+Golden Test
+---
+For the circe module you write a golden test that encodes and decodes a model, checking that it matches a golden example json. 
+```
+it("can compare json and a model") {
+    case class Foo(sameField: String)
+    implicit val encoder = Encoder.forProduct1("someField")(Foo.unapply)
+    implicit val decoder = Decoder.forProduct1("someField")(Foo.apply)
+    
+    val json = """
+                |{
+                | "someField": "valid json"
+                |}
+              """.stripMargin
+    
+    val model = Foo("valid json")
+    
+    model should matchJsonGolden(json)
+}
+```
+
 Publishing
 ---
 1) bump version in module to non snaphsot

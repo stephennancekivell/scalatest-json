@@ -1,5 +1,6 @@
 package com.stephenn.scalatest.circe
 
+import io.circe.{Decoder, Encoder}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -18,9 +19,11 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       val matchResult = JsonMatchers.matchJson("{  }").apply("  {}  ")
       matchResult.matches shouldBe true
 
-      Seq("{}" -> " { }",
-          " [ ] " -> "[]",
-          """{"a":0, "b":1}""" -> """{"b":1,"a":0}""").foreach {
+      Seq(
+        "{}" -> " { }",
+        " [ ] " -> "[]",
+        """{"a":0, "b":1}""" -> """{"b":1,"a":0}"""
+      ).foreach {
         case (left, right) =>
           val matchResult = JsonMatchers.matchJson(right).apply(left)
           matchResult.matches shouldBe true
@@ -75,6 +78,72 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         .matchJsonString("""{"b":1,"a":0}""")
         .apply(parse("""{"a":0, "b":1}""").toOption.get)
       matchResult.matches shouldBe true
+    }
+  }
+
+  describe("golden test") {
+    case class Foo(a: String)
+    implicit val encoder: Encoder[Foo] = Encoder.forProduct1("a")(Foo.unapply)
+    implicit val decoder: Decoder[Foo] = Decoder.forProduct1("a")(Foo.apply)
+
+    it("should pass a golden test") {
+      val result = JsonMatchers
+        .matchJsonGolden(""" {"a":"value"} """.stripMargin)
+        .apply(Foo("value"))
+      result.matches shouldBe true
+    }
+
+    it("should error if the json string isnt valid json") {
+      val result = JsonMatchers
+        .matchJsonGolden("not a valid json string")
+        .apply(Foo("value"))
+      result.matches shouldBe false
+      result.failureMessage shouldBe """Could not parse json string. "not a valid json string". ParsingFailure: "expected null got 'not a ...' (line 1, column 1)""""
+    }
+
+    it("should error if the json decodes but doesnt match the value") {
+      val result = JsonMatchers
+        .matchJsonGolden(""" {"a":"different value"} """.stripMargin)
+        .apply(Foo("value"))
+      result.matches shouldBe false
+      result.failureMessage shouldBe
+        """Json did not match "{"a":"different value"}" did not match "Foo(value)"
+          |
+          |Json Diff:
+          |"[
+          |  {
+          |    "op" : "replace",
+          |    "path" : "/a",
+          |    "value" : "value"
+          |  }
+          |]"""".stripMargin
+    }
+
+    it("should error if the json encoded value doesnt match the json") {
+      case class Bar(a: String)
+      implicit val encoder: Encoder[Bar] =
+        Encoder.forProduct1("encodedA")(Bar.unapply)
+      implicit val decoder: Decoder[Bar] = Decoder.forProduct1("a")(Bar.apply)
+
+      val result = JsonMatchers
+        .matchJsonGolden(""" {"a":"value"} """.stripMargin)
+        .apply(Bar("value"))
+      result.matches shouldBe false
+      result.failureMessage shouldBe
+        """Json did not match "{"a":"value"}" did not match "Bar(value)"
+          |
+          |Json Diff:
+          |"[
+          |  {
+          |    "op" : "remove",
+          |    "path" : "/a"
+          |  },
+          |  {
+          |    "op" : "add",
+          |    "path" : "/encodedA",
+          |    "value" : "value"
+          |  }
+          |]"""".stripMargin
     }
   }
 }
