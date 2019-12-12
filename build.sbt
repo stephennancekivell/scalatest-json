@@ -4,7 +4,7 @@ lazy val root = (project in file("."))
     commonSettings,
     publish / skip := true
   )
-  .aggregate(jsonassert, json4s, playJson, circe)
+  .aggregate(jsonassert, json4s, playJson, circe, argonaut)
 
 lazy val json4s = (project in file("json4s"))
 	.settings(commonSettings)
@@ -16,6 +16,9 @@ lazy val playJson = (project in file("play-json"))
   .settings(commonSettings)
 
 lazy val circe = (project in file("circe"))
+  .settings(commonSettings)
+
+lazy val argonaut = (project in file("argonaut"))
   .settings(commonSettings)
 
 lazy val commonSettings = Seq(
