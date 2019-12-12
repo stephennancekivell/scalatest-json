@@ -100,8 +100,9 @@ it("can compare json and a model") {
 
 Publishing
 ---
-1) bump version in module to non snaphsot
-2) commit and tag `git tag json4s-0.0.1` `git push --tags`
-3) sbt +json4s/publishSigned
-4) sbt sonatypeReleaseAll
-4) bump version to snapshot
+* bump version in module to non snaphsot
+* commit and tag `git tag json4s-0.0.1` `git push --tags`
+* export GPG_TTY=$(tty)
+* sbt +json4s/publishSigned
+* sbt sonatypeReleaseAll
+* bump version to snapshot
