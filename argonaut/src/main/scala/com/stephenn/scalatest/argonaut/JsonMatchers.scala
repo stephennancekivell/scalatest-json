@@ -42,9 +42,29 @@ trait JsonMatchers {
       }
     }
 
-  def matchJsonGolden[T: CodecJson: ClassTag](
-      value: T
-  ): Matcher[String] = {
+  def decodeTo[T: DecodeJson: ClassTag](right: T): Matcher[String] =
+    Matcher[String] { string =>
+      string.decode[T] match {
+        case Left(error) =>
+          MatchResult(
+            matches = false,
+            rawFailureMessage = "Could not parse json {0} error: {1}",
+            rawNegatedFailureMessage = "Could not parse json {0} error: {1}",
+            args = IndexedSeq(string.trim, error)
+          )
+        case Right(value) =>
+          MatchResult(
+            matches = value == right,
+            rawFailureMessage = "Values are not equal {0} did not match {1}",
+            rawNegatedFailureMessage =
+              "Values are not equal {0} did not match {1}",
+            args = IndexedSeq(value, right)
+          )
+      }
+    }
+
+  def matchJsonGolden[T: EncodeJson: DecodeJson: ClassTag](
+      value: T): Matcher[String] = {
     Matcher[String] { jsonString: String =>
       val valueAsJson = value.asJson
 

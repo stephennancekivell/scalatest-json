@@ -6,6 +6,7 @@ import argonaut._
 import Argonaut._
 
 class JsonMatchersSpec extends AnyFunSpec with Matchers {
+
   describe("JsonMatchers") {
     it("should pass when json is the same") {
       Seq("{}" -> "{}", "[]" -> "[]", "0" -> "0").foreach {
@@ -54,6 +55,34 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         JsonMatchers.matchJson("{}").apply("""{"a": [1  "two"]}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe """Could not parse json "{"a": [1  "two"]}" error: "Expected entry separator token but found: "two"]}""""
+    }
+  }
+
+  describe("decodeTo") {
+    case class Foo(a: String)
+    implicit val codec: CodecJson[Foo] = casecodec1(Foo.apply, Foo.unapply)("a")
+
+    it("should pass") {
+      val result = JsonMatchers
+        .decodeTo(Foo("value"))
+        .apply(""" {"a":"value"} """)
+      result.matches shouldBe true
+    }
+
+    it("should fail when invalid json") {
+      val result = JsonMatchers
+        .decodeTo(Foo("value"))
+        .apply(""" not json """)
+      result.matches shouldBe false
+      result.failureMessage shouldBe """Could not parse json "not json" error: Left("Unexpected content found: not json ")"""
+    }
+
+    it("should fail when decodes to model but values are different") {
+      val result = JsonMatchers
+        .decodeTo(Foo("value"))
+        .apply(""" {"a":"different"} """)
+      result.matches shouldBe false
+      result.failureMessage shouldBe "Values are not equal Foo(different) did not match Foo(value)"
     }
   }
 

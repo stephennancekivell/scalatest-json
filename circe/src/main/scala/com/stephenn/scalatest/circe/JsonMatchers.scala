@@ -72,7 +72,7 @@ trait JsonMatchers {
   }
 
   def matchJsonGolden[T: Encoder: Decoder: ClassTag](
-    jsonString: String
+      jsonString: String
   ): Matcher[T] = {
     Matcher[T] { value =>
       val valueAsJson = value.asJson
