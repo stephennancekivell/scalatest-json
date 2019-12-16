@@ -36,8 +36,23 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       val matchResult = JsonMatchers.matchJson("""{"l":1}""").apply("{}")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
-        """
-          |Json was not the equivalent. "{}" did not match "{"l":1}"
+        s"""
+          |Json was not the equivalent.
+          |{
+          |     "${green("l")}": ${green("1")}}
+        """.stripMargin.trim
+    }
+
+    it("should fail when left has different value") {
+      val matchResult =
+        JsonMatchers.matchJson("""{"l":{"r":1}}""").apply("""{"l":{"r":2}}""")
+      matchResult.matches shouldBe false
+      matchResult.failureMessage shouldBe
+        s"""
+          |Json was not the equivalent.
+          |{
+          |     "l": {
+          |          "r": ${red("2")} -> ${green("1")}}}
         """.stripMargin.trim
     }
 
@@ -45,8 +60,10 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       val matchResult = JsonMatchers.matchJson("{}").apply("""{"r":0}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
-        """
-          |Json was not the equivalent. "{"r":0}" did not match "{}"
+        s"""
+          |Json was not the equivalent.
+          |{
+          |     "${red("r")}": ${red("0")}}
         """.stripMargin.trim
     }
 
@@ -114,4 +131,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         """Json did not match "{"a":"different value"}" did not match "Foo(value)""""
     }
   }
+
+  def red(s: String): String = Console.RED + s + Console.RESET
+  def green(s: String): String = Console.GREEN + s + Console.RESET
 }
