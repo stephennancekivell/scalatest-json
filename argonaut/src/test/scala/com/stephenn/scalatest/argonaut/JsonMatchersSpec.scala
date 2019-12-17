@@ -37,7 +37,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         s"""
-          |Json was not the equivalent.
+          |Json did not match.
           |{
           |     "${green("l")}": ${green("1")}}
         """.stripMargin.trim
@@ -49,7 +49,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         s"""
-          |Json was not the equivalent.
+          |Json did not match.
           |{
           |     "l": {
           |          "r": ${red("2")} -> ${green("1")}}}
@@ -61,10 +61,52 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         s"""
-          |Json was not the equivalent.
+          |Json did not match.
           |{
           |     "${red("r")}": ${red("0")}}
         """.stripMargin.trim
+    }
+
+    it("should explain a big diff") {
+      val input = """
+                    |{
+                    | "someField": "valid json",
+                    | "otherField": ["json", "content"],
+                    | "third": [{
+                    |   "a": 1,
+                    |   "b": 3
+                    | }]
+                    |}
+                  """.stripMargin
+
+      val expected = """
+                       |{
+                       | "someField": "different json",
+                       | "otherField": ["json", "stuff", "changes"],
+                       | "third": [{
+                       |  "a": 2
+                       | }]
+                       |}
+                     """.stripMargin
+
+      val matchResult = JsonMatchers.matchJson(input).apply(expected)
+      matchResult.matches shouldBe false
+      val expectedMsg = s"""Json did not match.
+                           |{
+                           |     "someField": ${red("\"different json\"")} -> ${green(
+                             "\"valid json\""
+                           )},
+                           |     "otherField": [
+                           |          "json",
+                           |          ${red("\"stuff\"")} -> ${green(
+                             "\"content\""
+                           )},
+                           |          ${red("\"changes\"")}],
+                           |     "third": [
+                           |          {
+                           |          "a": ${red("2")} -> ${green("1")},
+                           |          "${green("b")}": ${green("3")}}]}""".stripMargin
+      matchResult.rawFailureMessage shouldBe expectedMsg
     }
 
     it("should fail on invalid json") {

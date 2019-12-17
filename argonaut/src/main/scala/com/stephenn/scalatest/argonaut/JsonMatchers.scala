@@ -20,13 +20,14 @@ trait JsonMatchers {
       toIgnore: List[_root_.com.softwaremill.diffx.FieldPath]
     ): DiffResult = {
 
-      def diffPrimative[A](leftA: Option[A],
-                           rightA: Option[A]): Option[DiffResult] =
+      def diffPrimative[A](leftA: Option[A], rightA: Option[A])(
+        show: A => String
+      ): Option[DiffResult] =
         diffWith(leftA, rightA) { (leftValue, rightValue) =>
           if (leftValue == rightValue)
-            Identical(leftValue)
+            Identical(show(leftValue))
           else
-            DiffResultValue(leftValue, rightValue)
+            DiffResultValue(show(leftValue), show(rightValue))
         }
 
       def diffWith[A](leftA: Option[A], rightA: Option[A])(
@@ -40,20 +41,12 @@ trait JsonMatchers {
         }
       }
 
-      diffPrimative(left.string, right.string)
-        .orElse(diffWith(left.number, right.number) { (leftValue, rightValue) =>
-          if (leftValue == rightValue)
-            Identical(leftValue.asJson.nospaces)
-          else
-            DiffResultValue(
-              leftValue.asJson.nospaces,
-              rightValue.asJson.nospaces
-            )
-        })
-        .orElse(diffPrimative(left.bool, right.bool))
+      diffPrimative(left.string, right.string)(_.asJson.nospaces)
+        .orElse(diffPrimative(left.number, right.number)(_.asJson.nospaces))
+        .orElse(diffPrimative(left.bool, right.bool)(_.asJson.nospaces))
         .orElse({
           if (left.isNull && right.isNull)
-            Some(Identical(left))
+            Some(Identical(left.asJson.nospaces))
           else
             None
         })
@@ -74,7 +67,7 @@ trait JsonMatchers {
           if (all.forall(_.isIdentical)) {
             Identical(all)
           } else {
-            DiffResultSet(all)
+            DiffResultJsArray(all)
           }
         })
         .orElse(diffWith(left.obj, right.obj) {
@@ -138,8 +131,8 @@ trait JsonMatchers {
           val s = diffResult.show
           MatchResult(
             matches = diffResult.isIdentical,
-            rawFailureMessage = "Json was not the equivalent.\n" + s,
-            rawNegatedFailureMessage = "Json was not the equivalent.\n" + s
+            rawFailureMessage = "Json did not match.\n" + s,
+            rawNegatedFailureMessage = "Json did not match.\n" + s
           )
       }
     }

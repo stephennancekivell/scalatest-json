@@ -7,6 +7,6 @@ case class DiffResultJson(fields: Map[DiffResult, DiffResult])
       fields.map(
         f => s"""${i(indent)}"${f._1.show}": ${f._2.showIndented(indent + 5)}"""
       )
-    showFields.mkString("{\n", ",", "}")
+    showFields.mkString("{\n", ",\n", "}")
   }
 }
