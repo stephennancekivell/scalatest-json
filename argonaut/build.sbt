@@ -9,5 +9,5 @@ crossScalaVersions := Seq("2.12.10", "2.13.1")
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.1.0",
   "io.argonaut" %% "argonaut" % "6.2.3",
-  "com.softwaremill.diffx" %% "diffx-core" % "0.3.15"
+  "com.softwaremill.diffx" %% "diffx-core" % "0.3.27"
 )
