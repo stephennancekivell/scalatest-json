@@ -8,5 +8,5 @@ crossScalaVersions := Seq("2.12.10", "2.13.1")
 
 libraryDependencies ++= Seq(
   "org.skyscreamer" % "jsonassert" % "1.5.0",
-  "org.scalatest" %% "scalatest" % "3.1.2"
+  "org.scalatest" %% "scalatest" % "3.2.0"
 )
