@@ -4,7 +4,7 @@ version := "0.0.5-SNAPSHOT"
 
 scalaVersion := "2.12.10"
 
-crossScalaVersions := Seq("2.12.10", "2.13.1")
+crossScalaVersions := Seq("2.12.12", "2.13.3")
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.1.2",
