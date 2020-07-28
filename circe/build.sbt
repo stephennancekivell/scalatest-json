@@ -2,7 +2,7 @@ name := "scalatest-circe"
 
 version := "0.0.6-SNAPSHOT"
 
-scalaVersion := "2.12.10"
+scalaVersion := "2.12.12"
 
 crossScalaVersions := Seq("2.12.12", "2.13.3")
 
