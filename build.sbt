@@ -1,3 +1,4 @@
+import sbt.Keys.crossScalaVersions
 
 lazy val root = (project in file("."))
   .settings(
@@ -33,6 +34,9 @@ lazy val commonSettings = Seq(
   licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
   publishTo := sonatypePublishTo.value,
+  version := "0.1.0",
+  scalaVersion := "2.12.12",
+  crossScalaVersions := Seq("2.12.12", "2.13.3"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",       // yes, this is 2 args
