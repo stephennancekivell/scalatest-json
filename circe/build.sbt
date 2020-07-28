@@ -1,11 +1,5 @@
 name := "scalatest-circe"
 
-version := "0.0.6-SNAPSHOT"
-
-scalaVersion := "2.12.12"
-
-crossScalaVersions := Seq("2.12.12", "2.13.3")
-
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.1.2",
   "org.gnieh" %% "diffson-circe" % "4.0.2"
