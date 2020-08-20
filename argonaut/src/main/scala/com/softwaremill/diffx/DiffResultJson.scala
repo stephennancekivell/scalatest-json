@@ -2,7 +2,7 @@ package com.softwaremill.diffx
 
 case class DiffResultJson(fields: Map[DiffResult, DiffResult])
     extends DiffResultDifferent {
-  override private[diffx] def showIndented(indent: Int): String = {
+  override private[diffx] def showIndented(indent: Int)(implicit c: ConsoleColorConfig): String = {
     val showFields =
       fields.map(
         f => s"""${i(indent)}"${f._1.show}": ${f._2.showIndented(indent + 5)}"""

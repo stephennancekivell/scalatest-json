@@ -39,7 +39,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         s"""
           |Json did not match.
           |{
-          |     "${green("l")}": ${green("1")}}
+          |     "${red("l")}": ${red("1")}}
         """.stripMargin.trim
     }
 
@@ -52,7 +52,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
           |Json did not match.
           |{
           |     "l": {
-          |          "r": ${red("2")} -> ${green("1")}}}
+          |          "r": ${red("2")}${red(" -> ")}${green("1")}}}
         """.stripMargin.trim
     }
 
@@ -63,7 +63,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         s"""
           |Json did not match.
           |{
-          |     "${red("r")}": ${red("0")}}
+          |     "${green("r")}": ${green("0")}}
         """.stripMargin.trim
     }
 
@@ -93,19 +93,19 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       matchResult.matches shouldBe false
       val expectedMsg = s"""Json did not match.
                            |{
-                           |     "someField": ${red("\"different json\"")} -> ${green(
+                           |     "someField": ${red("\"different json\"")}${red(" -> ")}${green(
                              "\"valid json\""
                            )},
                            |     "otherField": [
                            |          "json",
-                           |          ${red("\"stuff\"")} -> ${green(
+                           |          ${red("\"stuff\"")}${red(" -> ")}${green(
                              "\"content\""
                            )},
-                           |          ${red("\"changes\"")}],
+                           |          ${green("\"changes\"")}],
                            |     "third": [
                            |          {
-                           |          "a": ${red("2")} -> ${green("1")},
-                           |          "${green("b")}": ${green("3")}}]}""".stripMargin
+                           |          "a": ${red("2")}${red(" -> ")}${green("1")},
+                           |          "${red("b")}": ${red("3")}}]}""".stripMargin
       matchResult.rawFailureMessage shouldBe expectedMsg
     }
 
