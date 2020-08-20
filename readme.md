@@ -1,6 +1,8 @@
 Scalatest-json
 ===
 [![Build Status](https://travis-ci.org/stephennancekivell/scalatest-json.svg?branch=master)](https://travis-ci.org/stephennancekivell/scalatest-json)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.stephenn/scalatest-argonaut_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.stephenn/scalatest-argonaut_2.13)
+
 
 Scalatest matchers for Json with appropriate equality and descriptive error messages.
 
