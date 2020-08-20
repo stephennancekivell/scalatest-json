@@ -1,6 +1,8 @@
 Scalatest-json
 ===
 [![Build Status](https://travis-ci.org/stephennancekivell/scalatest-json.svg?branch=master)](https://travis-ci.org/stephennancekivell/scalatest-json)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.stephenn/scalatest-argonaut_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.stephenn/scalatest-argonaut_2.13)
+
 
 Scalatest matchers for Json with appropriate equality and descriptive error messages.
 
@@ -9,11 +11,11 @@ install
 
 Add the dependency you want
 ```
-libraryDependencies += "com.stephenn" %% "scalatest-json-jsonassert" % "0.0.5"
-libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.0.4"
-libraryDependencies += "com.stephenn" %% "scalatest-play-json" % "0.0.3"
-libraryDependencies += "com.stephenn" %% "scalatest-circe" % "0.0.4"
-libraryDependencies += "com.stephenn" %% "scalatest-argonaut" % "0.0.2"
+libraryDependencies += "com.stephenn" %% "scalatest-json-jsonassert" % "0.1.0"
+libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.1.0"
+libraryDependencies += "com.stephenn" %% "scalatest-play-json" % "0.1.0"
+libraryDependencies += "com.stephenn" %% "scalatest-circe" % "0.1.0"
+libraryDependencies += "com.stephenn" %% "scalatest-argonaut" % "0.1.0"
 ```
 
 You can also check the latest version on [maven central](https://search.maven.org/search?q=com.stephenn%20scalatest).
