@@ -22,11 +22,6 @@ trait JsonMatchers {
     }
   }
 
-  /**
-    * TODO: to handle cases with JSON as only "[]" use scanJsonArrayFromStream
-    * see: https://github.com/plokhotnyuk/jsoniter-scala/blob/140fbcb74634aaa3b5371fe95e27bcf7fca85f3b/jsoniter-scala-core/shared/src/test/scala/com/github/plokhotnyuk/jsoniter_scala/core/PackageSpec.scala#L241
-    * It will take also "null"
-    */
   private def parse[T: JsonValueCodec : ClassTag](json: String): Either[Throwable, T] = {
     Try(readFromArray(json.getBytes("UTF-8"))) match {
       case Success(parsedData) => Right(parsedData)

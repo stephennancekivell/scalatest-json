@@ -17,7 +17,8 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
   describe("JsonMatchers with implicit codec") {
 
-    implicit val codec: JsonValueCodec[Data] = JsonCodecMaker.make(CodecMakerConfig.withSkipUnexpectedFields(false))
+    implicit val codec: JsonValueCodec[Data] =
+      JsonCodecMaker.make(CodecMakerConfig.withSkipUnexpectedFields(false))
 
     it("should pass when JSON objects are the same") {
       Seq(
@@ -32,7 +33,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
     it("should pass when another JSON object is equivalent") {
       Seq(
+        // optional fields ("b" here), are ignored whether they are omitted or null
         """{"a":1}""" -> """{ "a" : 1 }""",
+        """{"a":1}""" -> """{ "a" : 1, "b" : null }""",
         """{"a":0, "b":1}""" -> """{"b":1,"a":0}""",
         """{"b":1,"a":0}""" -> """{"a":0, "b":1}"""
       ).foreach {
@@ -43,7 +46,8 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
     }
 
     it("should show deviation between two JSON objects") {
-      val matchResult = JsonMatchers.matchJson("""{"b":2,"a":0}""").apply("""{"a":0, "b":1}""")
+      val matchResult = JsonMatchers.matchJson(
+        """{"b":2,"a":0}""").apply("""{"a":0, "b":1}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         s"""
@@ -100,9 +104,13 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
   describe("JsonMatchers with explicit codec") {
 
     // Note that we just generate a codec without any additional config parameters.
-    // There is no make(CodecMakerConfig.withSkipUnexpectedFields(false)), and the option is enabled by default.
+    // There is no make(CodecMakerConfig.withSkipUnexpectedFields(false)),
+    // and the option is enabled by default.
+    // Please find Scala Doc for more info on available options
+    // https://github.com/plokhotnyuk/jsoniter-scala/blob/49aaf309e7f3d49d674522c1d1b0bce0b37bd4ac/jsoniter-scala-macros/shared/src/main/scala/com/github/plokhotnyuk/jsoniter_scala/macros/JsonCodecMaker.scala#L71
     implicit val codec2: JsonValueCodec[Data] = JsonCodecMaker.make
     implicit val codec1: JsonValueCodec[Root] = JsonCodecMaker.make
+    implicit val codec3: JsonValueCodec[List[Data]] = JsonCodecMaker.make
 
     it("should pass when JSON objects are the same") {
 
@@ -113,16 +121,29 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         """{ "items": [ { "a":1,"b": 2 } ] }""" -> """{"items": [{"a":1,"b":2}]}"""
       ).foreach {
         case (left, right) =>
-          // note that explicit [Root] is given here to bind it with particular coded explicitly
+          // note that explicit [Root] is for binding with particular codec explicitly
           val matchResult = JsonMatchers.matchJson[Root](right).apply(left)
           matchResult.matches shouldBe true
       }
     }
 
     it("should pass even left has extra field, but skipUnexpectedFields config param is disabled") {
-      // note that explicit [Data] is given here to bind it with particular coded explicitly
-      val matchResult = JsonMatchers.matchJson[Data]("""{"a":1,"x":1}""").apply("""{"a":1}""")
+      // note that explicit [Data] is for binding with particular codec explicitly
+      val matchResult = JsonMatchers.matchJson[Data](
+        """{"a":1,"x":1}""").apply("""{"a":1}""")
       matchResult.matches shouldBe true
+    }
+
+    it("should pass when another JSON object is equivalent") {
+      Seq(
+        """[{"a":1}]""" -> """[ { "a" : 1 } ]""",
+        """[]""" -> """[ ]"""
+      ).foreach {
+        case (left, right) =>
+          // note that explicit [List[Data]] is for binding with particular codec explicitly
+          val matchResult = JsonMatchers.matchJson[List[Data]](right).apply(left)
+          matchResult.matches shouldBe true
+      }
     }
 
   }
