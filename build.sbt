@@ -22,6 +22,9 @@ lazy val circe = (project in file("circe"))
 lazy val argonaut = (project in file("argonaut"))
   .settings(commonSettings)
 
+lazy val jsoniterScala = (project in file("jsoniter-scala"))
+  .settings(commonSettings)
+
 lazy val commonSettings = Seq(
   organization := "com.stephenn",
   homepage := Some(url("https://github.com/stephennancekivell/scalatest-json")),

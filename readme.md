@@ -16,6 +16,7 @@ libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-play-json" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-circe" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-argonaut" % "0.1.0"
+libraryDependencies += "com.stephenn" %% "scalatest-jsoniter-scala" % "0.1.0"
 ```
 
 You can also check the latest version on [maven central](https://search.maven.org/search?q=com.stephenn%20scalatest).
