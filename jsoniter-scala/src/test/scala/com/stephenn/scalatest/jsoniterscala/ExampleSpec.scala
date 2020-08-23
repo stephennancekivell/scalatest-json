@@ -12,7 +12,7 @@ class ExampleSpec extends AnyFunSpec with Matchers with JsonMatchers {
 
   implicit val codec: JsonValueCodec[Data] = JsonCodecMaker.make
 
-  // Please unignore test to see it in action
+  // Please un-ignore test to see it in action
   ignore("Jsoniter Scala JsonMatchers usage") {
 
     it("should pass matching json with different spacing and order") {
