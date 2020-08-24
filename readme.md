@@ -10,12 +10,13 @@ install
 ---
 
 Add the dependency you want
-```
+```sbt
 libraryDependencies += "com.stephenn" %% "scalatest-json-jsonassert" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-json4s" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-play-json" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-circe" % "0.1.0"
 libraryDependencies += "com.stephenn" %% "scalatest-argonaut" % "0.1.0"
+libraryDependencies += "com.stephenn" %% "scalatest-jsoniter-scala" % "0.1.0"
 ```
 
 You can also check the latest version on [maven central](https://search.maven.org/search?q=com.stephenn%20scalatest).
@@ -24,7 +25,7 @@ usage
 ---
 Your scalatest spec should extend or import `JsonMatchers`
 
-```
+```scala
 class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
 
   describe("JsonMatchers usage") {
@@ -32,13 +33,13 @@ class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
       val input = """
         |{
         | "some": "valid json",
-        | "with": ["json", "content"]
+        | "plus": ["json", "content"]
         |}
       """.stripMargin
 
       val expected = """
                     |{
-                    | "with": ["json", "content"],
+                    | "plus": ["json", "content"],
                     |     "some":   "valid json"
                     |}
                   """.stripMargin
@@ -80,10 +81,23 @@ class ExampleSpec extends FunSpec with Matchers with JsonMatchers {
 
 ```
 
+For **[Jsoniter Scala](https://github.com/plokhotnyuk/jsoniter-scala)** the data structures and corresponding codec shall be defined, eg.:
+
+```scala
+  import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
+  import com.github.plokhotnyuk.jsoniter_scala.macros.JsonCodecMaker
+
+  case class Data(some: String, plus: Seq[String])
+  
+  implicit val codec: JsonValueCodec[Data] = JsonCodecMaker.make
+```
+
+Please find a complete example [here](jsoniter-scala/src/test/scala/com/stephenn/scalatest/jsoniterscala/ExampleSpec.scala).
+
 Golden Test
 ---
-For the circe module you write a golden test that encodes and decodes a model, checking that it matches a golden example json. 
-```
+For the circe module you write a golden test that encodes and decodes a model, checking that it matches a golden example json.
+```scala
 it("can compare json and a model") {
     case class Foo(sameField: String)
     implicit val encoder = Encoder.forProduct1("someField")(Foo.unapply)
