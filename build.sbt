@@ -43,8 +43,8 @@ lazy val commonSettings = Seq(
   publishMavenStyle := true,
   publishTo := sonatypePublishTo.value,
   version := "0.2.1-SNAPSHOT",
-  scalaVersion := "2.12.12",
-  crossScalaVersions := Seq("2.12.12", "2.13.3"),
+  scalaVersion := "2.12.13",
+  crossScalaVersions := Seq("2.12.13", "2.13.3"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",       // yes, this is 2 args
