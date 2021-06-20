@@ -37,7 +37,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
           |Json did not match "{}" did not match "{"l":1}"
           |
           |Json Diff:
-          |"JsonPatch(List(Add(Chain(Left(l)),1)))"
+          |"JsonPatch(List(Add(Pointer(Chain(Left(l))),1)))"
         """.stripMargin.trim
     }
 
@@ -49,7 +49,7 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
           |Json did not match "{"r":0}" did not match "{}"
           |
           |Json Diff:
-          |"JsonPatch(List(Remove(Chain(Left(r)),None)))"
+          |"JsonPatch(List(Remove(Pointer(Chain(Left(r))),None)))"
         """.stripMargin.trim
     }
 

@@ -74,8 +74,11 @@ class ExampleSpec extends AnyFunSpec with Matchers with JsonMatchers {
 
     it("can compare json and a model") {
       case class Foo(sameField: String)
-      implicit val encoder = Encoder.forProduct1("someField")(Foo.unapply)
-      implicit val decoder = Decoder.forProduct1("someField")(Foo.apply)
+
+      implicit val encoder: Encoder[Foo] =
+        Encoder.forProduct1("someField")(_.sameField)
+      implicit val decoder: Decoder[Foo] =
+        Decoder.forProduct1("someField")(Foo.apply)
 
       val json = """
                     |{
