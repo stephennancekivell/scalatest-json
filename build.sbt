@@ -60,8 +60,8 @@ lazy val commonSettings = Seq(
     "-deprecation",
     "-encoding",
     "UTF-8", // yes, this is 2 args
-    "-language:existentials",
     "-language:higherKinds",
+    "-language:existentials",
     "-language:implicitConversions",
     "-unchecked",
     "-Xfatal-warnings"
