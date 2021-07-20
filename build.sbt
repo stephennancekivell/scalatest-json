@@ -3,7 +3,10 @@ import sbt.Keys.crossScalaVersions
 lazy val root = (project in file("."))
   .settings(
     commonSettings,
-    publish / skip := true
+//    publish / skip := true,
+    publish := {},
+    publishLocal := {},
+    publishArtifact := false
   )
   .aggregate(jsonassert, json4s, playJson, circe, argonaut, jsoniterScala)
 
