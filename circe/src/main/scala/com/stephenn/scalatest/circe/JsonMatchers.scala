@@ -66,7 +66,7 @@ trait JsonMatchers {
     import io.circe._
     import io.circe.syntax._
 
-    implicit val lcs = new Patience[Json]
+    implicit val lcs: Patience[Json] = new Patience[Json]
 
     diff(left, right).asJson.toString
   }

@@ -8,10 +8,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
   describe("JsonMatchers") {
     it("should pass when json is the same") {
-      Seq("{}" -> "{}", "[]" -> "[]").foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      Seq("{}" -> "{}", "[]" -> "[]").foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
@@ -23,10 +22,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         "{}" -> " { }",
         " [ ] " -> "[]",
         """{"a":0, "b":1}""" -> """{"b":1,"a":0}"""
-      ).foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
@@ -83,8 +81,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
   describe("golden test") {
     case class Foo(a: String)
-    implicit val encoder: Encoder[Foo] = Encoder.forProduct1("a")(Foo.unapply)
-    implicit val decoder: Decoder[Foo] = Decoder.forProduct1("a")(Foo.apply)
+    implicit val encoder: Encoder[Foo] =
+      Encoder.forProduct1("a")(_.a)
+    implicit val decoder: Decoder[Foo] = Decoder.forProduct1("a")(a => Foo(a))
 
     it("should pass a golden test") {
       val result = JsonMatchers
@@ -121,9 +120,11 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
     it("should error if the json encoded value doesnt match the json") {
       case class Bar(a: String)
+      case class B(a: String, b: String)
+
       implicit val encoder: Encoder[Bar] =
-        Encoder.forProduct1("encodedA")(Bar.unapply)
-      implicit val decoder: Decoder[Bar] = Decoder.forProduct1("a")(Bar.apply)
+        Encoder.forProduct1("encodedA")(_.a)
+      implicit val decoder: Decoder[Bar] = Decoder.forProduct1("a")(a => Bar(a))
 
       val result = JsonMatchers
         .matchJsonGolden(""" {"a":"value"} """.stripMargin)

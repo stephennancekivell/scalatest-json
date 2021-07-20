@@ -1,11 +1,11 @@
 name := "scalatest-circe"
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.2.1",
-  "org.gnieh" %% "diffson-circe" % "4.0.3"
+  "org.scalatest" %% "scalatest" % "3.2.9",
+  "org.gnieh" %% "diffson-circe" % "4.1.1"
 )
 
-val circeVersion = "0.13.0"
+val circeVersion = "0.14.1"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
