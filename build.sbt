@@ -41,7 +41,7 @@ lazy val commonSettings = Seq(
     Developer(
       "stephennancekivell",
       "Stephen Nancekivell",
-      "stephennancekivell@gmail.com",
+      "stephennancekivell+github@gmail.com",
       url("https://stephenn.com")
     ),
     Developer(
