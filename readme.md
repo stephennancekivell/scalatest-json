@@ -6,7 +6,7 @@ Scalatest-json
 
 Scalatest matchers for Json with appropriate equality and descriptive error messages.
 
-install
+Install
 ---
 
 Add the dependency you want
@@ -21,7 +21,7 @@ libraryDependencies += "com.stephenn" %% "scalatest-jsoniter-scala" % "0.2.0"
 
 You can also check the latest version on [maven central](https://search.maven.org/search?q=com.stephenn%20scalatest).
 
-usage
+Usage
 ---
 Your scalatest spec should extend or import `JsonMatchers`
 
@@ -117,9 +117,10 @@ it("can compare json and a model") {
 
 Publishing
 ---
-* bump version to non snaphsot
-* commit and tag `git tag scalatest-json-0.1.0` `git push --tags`
-* export GPG_TTY=$(tty)
-* sbt +publishSigned
-* sbt sonatypeReleaseAll
-* bump version to snapshot
+Done from github actions using [sbt-ci-release](https://github.com/olafurpg/sbt-ci-release)
+
+eg
+```
+git tag -a v0.1.0 -m "v0.1.0"
+git push origin v0.1.0
+```
