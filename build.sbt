@@ -35,10 +35,7 @@ inThisBuild(
 lazy val root = (project in file("."))
   .settings(
     commonSettings,
-    publish / skip := true,
-//    publish := {},
-    publishLocal := {},
-    publishArtifact := false
+    publish / skip := true
   )
   .aggregate(jsonassert, json4s, playJson, circe, argonaut, jsoniterScala)
 
@@ -54,7 +51,7 @@ lazy val playJson = (project in file("play-json"))
 lazy val circe = (project in file("circe"))
   .settings(commonSettings)
   .settings(
-//    crossScalaVersions += "3.0.1"
+    crossScalaVersions += "3.0.1"
   )
 
 lazy val argonaut = (project in file("argonaut"))
@@ -64,8 +61,6 @@ lazy val jsoniterScala = (project in file("jsoniter-scala"))
   .settings(commonSettings)
 
 lazy val commonSettings = Seq(
-//  publishMavenStyle := true,
-//  publishTo := sonatypePublishTo.value,
   scalaVersion := "2.12.14",
   crossScalaVersions := Seq("2.12.14", "2.13.6"),
   scalacOptions ++= Seq(
