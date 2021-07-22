@@ -121,6 +121,5 @@ Done from github actions using [sbt-ci-release](https://github.com/olafurpg/sbt-
 
 eg
 ```
-git tag -a v0.1.0 -m "v0.1.0"
-git push origin v0.1.0
+./release 'v0.2.5'
 ```
