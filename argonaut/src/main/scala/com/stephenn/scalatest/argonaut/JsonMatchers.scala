@@ -15,23 +15,23 @@ trait JsonMatchers {
 
   private implicit val diffJson: Diff[Json] = new Diff[Json] {
     def apply(
-      left: Json,
-      right: Json,
-      toIgnore: List[_root_.com.softwaremill.diffx.FieldPath]
+        left: Json,
+        right: Json,
+        context: DiffContext
     ): DiffResult = {
 
       def diffPrimative[A](leftA: Option[A], rightA: Option[A])(
-        show: A => String
+          show: A => String
       ): Option[DiffResult] =
         diffWith(leftA, rightA) { (leftValue, rightValue) =>
           if (leftValue == rightValue)
-            Identical(show(leftValue))
+            IdenticalValue(show(leftValue))
           else
             DiffResultValue(show(leftValue), show(rightValue))
         }
 
       def diffWith[A](leftA: Option[A], rightA: Option[A])(
-        fn: (A, A) => DiffResult
+          fn: (A, A) => DiffResult
       ): Option[DiffResult] = {
         for {
           leftValue <- leftA
@@ -46,16 +46,15 @@ trait JsonMatchers {
         .orElse(diffPrimative(left.bool, right.bool)(_.asJson.nospaces))
         .orElse({
           if (left.isNull && right.isNull)
-            Some(Identical(left.asJson.nospaces))
+            Some(IdenticalValue(left.asJson.nospaces))
           else
             None
         })
         .orElse(diffWith(left.array, right.array) { (leftArr, rightArr) =>
           val zipped: immutable.Seq[(Json, Json)] = leftArr.zip(rightArr)
-          val diffs: immutable.Seq[DiffResult] = zipped.map {
-            case (a, b) =>
-              val d: DiffResult = diffJson(a, b)
-              d
+          val diffs: immutable.Seq[DiffResult] = zipped.map { case (a, b) =>
+            val d: DiffResult = diffJson(a, b)
+            d
           }
 
           val missing = leftArr.drop(rightArr.size).map(DiffResultMissing.apply)
@@ -65,49 +64,45 @@ trait JsonMatchers {
           val all = (diffs ++ missing ++ additional).toList
 
           if (all.forall(_.isIdentical)) {
-            Identical(all)
+            IdenticalValue(all)
           } else {
             DiffResultJsArray(all)
           }
         })
-        .orElse(diffWith(left.obj, right.obj) {
-          case (leftObj, rightObj) =>
-            val leftMap = leftObj.toMap
-            val m: List[(DiffResult, DiffResult)] = leftObj.toList.map {
-              case (key, leftValue) =>
-                rightObj(key) match {
-                  case Some(rightValue) =>
-                    val d: DiffResult = diffJson(leftValue, rightValue)
-                    Identical(key) -> d
-                  case None =>
-                    DiffResultMissing(key) -> DiffResultMissing(leftValue)
-                }
+        .orElse(diffWith(left.obj, right.obj) { case (leftObj, rightObj) =>
+          val leftMap = leftObj.toMap
+          val m: List[(DiffResult, DiffResult)] =
+            leftObj.toList.map { case (key, leftValue) =>
+              rightObj(key) match {
+                case Some(rightValue) =>
+                  val d: DiffResult = diffJson(leftValue, rightValue)
+                  IdenticalValue(key) -> d
+                case None =>
+                  DiffResultMissing(key) -> DiffResultMissing(leftValue)
+              }
             }
 
-            val rightKeys = rightObj.toMap.keySet
-            val leftKeys = leftMap.keySet
-            val additional: List[(DiffResult, DiffResult)] = rightKeys.toList
-              .filterNot(leftKeys.contains)
-              .flatMap(
-                k =>
-                  rightObj(k).map(
-                    v => DiffResultAdditional(k) -> DiffResultAdditional(v)
-                )
-              )
+          val rightKeys = rightObj.toMap.keySet
+          val leftKeys = leftMap.keySet
+          val additional: List[(DiffResult, DiffResult)] = rightKeys.toList
+            .filterNot(leftKeys.contains)
+            .flatMap(k =>
+              rightObj(k)
+                .map(v => DiffResultAdditional(k) -> DiffResultAdditional(v))
+            )
 
-            val all = m ++ additional
-            if (all.forall { case (k, v) => k.isIdentical && v.isIdentical }) {
-              Identical(leftObj)
-            } else {
-              DiffResultJson(all.toMap)
-            }
+          val all = m ++ additional
+          if (all.forall { case (k, v) => k.isIdentical && v.isIdentical }) {
+            IdenticalValue(leftObj)
+          } else {
+            DiffResultJson(all.toMap)
+          }
         })
         .getOrElse(DiffResultValue(left, right))
     }
   }
 
-  /**
-    * Checks if the given json objects are equivalent.
+  /** Checks if the given json objects are equivalent.
     */
   def matchJson(right: String): Matcher[String] =
     Matcher[String] { left =>
@@ -128,7 +123,7 @@ trait JsonMatchers {
           )
         case (Right(leftJs), Right(rightJs)) =>
           val diffResult = Diff.compare(leftJs, rightJs)
-          val s = diffResult.show
+          val s = diffResult.show()
           MatchResult(
             matches = diffResult.isIdentical,
             rawFailureMessage = "Json did not match.\n" + s,
@@ -159,7 +154,7 @@ trait JsonMatchers {
     }
 
   def matchJsonGolden[T: EncodeJson: DecodeJson: ClassTag](
-    value: T
+      value: T
   ): Matcher[String] = {
     Matcher[String] { jsonString: String =>
       val valueAsJson = value.asJson
