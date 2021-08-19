@@ -17,13 +17,14 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       val matchResult = JsonMatchers.matchJson("{  }").apply("  {}  ")
       matchResult.matches shouldBe true
 
-      Seq("{}" -> " { }",
-          " [ ] " -> "[]",
-          "0" -> "0",
-          """{"a":0, "b":1}""" -> """{"b":1,"a":0}""").foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      Seq(
+        "{}" -> " { }",
+        " [ ] " -> "[]",
+        "0" -> "0",
+        """{"a":0, "b":1}""" -> """{"b":1,"a":0}"""
+      ).foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
