@@ -7,8 +7,7 @@ import scala.util.Try
 
 trait JsonMatchers {
 
-  /**
-    * Checks if the given json objects are equivalent.
+  /** Checks if the given json objects are equivalent.
     */
   def matchJson(right: String): Matcher[String] = {
     Matcher[String] { left =>
@@ -21,8 +20,7 @@ trait JsonMatchers {
     }
   }
 
-  /**
-    * Checks if the given json objects are equivalent.
+  /** Checks if the given json objects are equivalent.
     */
   def matchJsonString(right: String): Matcher[JsValue] = {
     Matcher[JsValue] { left =>
@@ -35,10 +33,12 @@ trait JsonMatchers {
     }
   }
 
-  private def matchJsonResult(left: String,
-                              right: String,
-                              leftJson: JsValue,
-                              rightJson: JsValue) =
+  private def matchJsonResult(
+      left: String,
+      right: String,
+      leftJson: JsValue,
+      rightJson: JsValue
+  ) =
     MatchResult(
       matches = leftJson == rightJson,
       rawFailureMessage =
