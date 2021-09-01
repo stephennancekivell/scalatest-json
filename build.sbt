@@ -43,13 +43,13 @@ lazy val json4s = (project in file("json4s"))
   .settings(commonSettings)
 
 lazy val jsonassert = (project in file("jsonassert"))
-  .settings(commonSettings, crossScalaVersions += "3.0.1")
+  .settings(commonSettings, crossScalaVersions += "3.0.2")
 
 lazy val playJson = (project in file("play-json"))
   .settings(commonSettings)
 
 lazy val circe = (project in file("circe"))
-  .settings(commonSettings, crossScalaVersions += "3.0.1")
+  .settings(commonSettings, crossScalaVersions += "3.0.2")
 
 lazy val argonaut = (project in file("argonaut"))
   .settings(commonSettings)
