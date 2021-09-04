@@ -7,10 +7,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
 
   describe("JsonMatchers") {
     it("should pass when json is the same") {
-      Seq("{}" -> "{}", "[]" -> "[]").foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      Seq("{}" -> "{}", "[]" -> "[]").foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
@@ -22,10 +21,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         "{}" -> " { }",
         " [ ] " -> "[]",
         """{"a":0, "b":1}""" -> """{"b":1,"a":0}"""
-      ).foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
