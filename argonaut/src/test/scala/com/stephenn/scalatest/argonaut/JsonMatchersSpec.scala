@@ -25,10 +25,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         " [ ] " -> "[]",
         "0" -> "0",
         """{"a":0, "b":1}""" -> """{"b":1,"a":0}"""
-      ).foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
@@ -93,19 +92,23 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       matchResult.matches shouldBe false
       val expectedMsg = s"""Json did not match.
                            |{
-                           |     "someField": ${red("\"different json\"")}${red(" -> ")}${green(
-                             "\"valid json\""
-                           )},
+                           |     "someField": ${red("\"different json\"")}${red(
+        " -> "
+      )}${green(
+        "\"valid json\""
+      )},
                            |     "otherField": [
                            |          "json",
                            |          ${red("\"stuff\"")}${red(" -> ")}${green(
-                             "\"content\""
-                           )},
+        "\"content\""
+      )},
                            |          ${green("\"changes\"")}],
                            |     "third": [
                            |          {
                            |          "a": ${red("2")}${red(" -> ")}${green("1")},
-                           |          "${red("b")}": ${red("3")}}]}""".stripMargin
+                           |          "${red("b")}": ${red(
+        "3"
+      )}}]}""".stripMargin
       matchResult.rawFailureMessage shouldBe expectedMsg
     }
 
