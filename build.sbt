@@ -58,8 +58,8 @@ lazy val jsoniterScala = (project in file("jsoniter-scala"))
   .settings(commonSettings)
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.12.14",
-  crossScalaVersions := Seq("2.12.14", "2.13.6"),
+  scalaVersion := "2.12.15",
+  crossScalaVersions := Seq("2.12.15", "2.13.6"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding",
