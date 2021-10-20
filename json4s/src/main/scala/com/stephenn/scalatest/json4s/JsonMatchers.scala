@@ -6,8 +6,7 @@ import org.json4s.native.JsonMethods._
 
 trait JsonMatchers {
 
-  /**
-    * Checks if the given json objects are equivalent.
+  /** Checks if the given json objects are equivalent.
     */
   def matchJson(right: String): Matcher[String] = {
     Matcher[String] { left =>
@@ -20,8 +19,7 @@ trait JsonMatchers {
     }
   }
 
-  /**
-    * Checks if the given json objects are equivalent.
+  /** Checks if the given json objects are equivalent.
     */
   def matchJsonString(right: String): Matcher[JValue] = {
     Matcher[JValue] { left =>
@@ -34,10 +32,12 @@ trait JsonMatchers {
     }
   }
 
-  private def matchJsonResult(left: String,
-                              right: String,
-                              leftJson: JValue,
-                              rightJson: JValue) =
+  private def matchJsonResult(
+      left: String,
+      right: String,
+      leftJson: JValue,
+      rightJson: JValue
+  ) =
     MatchResult(
       matches = leftJson == rightJson,
       rawFailureMessage =

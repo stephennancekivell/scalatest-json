@@ -1,7 +1,10 @@
 package com.stephenn.scalatest.jsoniterscala
 
 import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
-import com.github.plokhotnyuk.jsoniter_scala.macros.{CodecMakerConfig, JsonCodecMaker}
+import com.github.plokhotnyuk.jsoniter_scala.macros.{
+  CodecMakerConfig,
+  JsonCodecMaker
+}
 import com.softwaremill.diffx.{Derived, Diff}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -24,10 +27,9 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       Seq(
         """{"a":1}""" -> """{"a":1}""",
         """{"a":1,"b": 2}""" -> """{"a":1,"b":2}"""
-      ).foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
@@ -38,16 +40,15 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
         """{"a":1}""" -> """{ "a" : 1, "b" : null }""",
         """{"a":0, "b":1}""" -> """{"b":1,"a":0}""",
         """{"b":1,"a":0}""" -> """{"a":0, "b":1}"""
-      ).foreach {
-        case (left, right) =>
-          val matchResult = JsonMatchers.matchJson(right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        val matchResult = JsonMatchers.matchJson(right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
     it("should show deviation between two JSON objects") {
-      val matchResult = JsonMatchers.matchJson(
-        """{"b":2,"a":0}""").apply("""{"a":0, "b":1}""")
+      val matchResult =
+        JsonMatchers.matchJson("""{"b":2,"a":0}""").apply("""{"a":0, "b":1}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         s"""
@@ -59,7 +60,8 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
     }
 
     it("should fail when left has extra fields") {
-      val matchResult = JsonMatchers.matchJson("""{"a":1,"x":1}""").apply("""{"a":1}""")
+      val matchResult =
+        JsonMatchers.matchJson("""{"a":1,"x":1}""").apply("""{"a":1}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         """
@@ -73,7 +75,8 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
     }
 
     it("should fail when right has extra fields") {
-      val matchResult = JsonMatchers.matchJson("""{"a":1}""").apply("""{"a":1,"x":1}""")
+      val matchResult =
+        JsonMatchers.matchJson("""{"a":1}""").apply("""{"a":1,"x":1}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         """
@@ -87,7 +90,8 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
     }
 
     it("should fail on invalid JSON Object") {
-      val matchResult = JsonMatchers.matchJson("""{"a":1}""").apply("""{"a":nope}""")
+      val matchResult =
+        JsonMatchers.matchJson("""{"a":1}""").apply("""{"a":nope}""")
       matchResult.matches shouldBe false
       matchResult.failureMessage shouldBe
         """Could not parse json "{"a":nope}" error: "illegal number, offset: 0x00000005, buf:
@@ -119,18 +123,19 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       Seq(
         """{"items": [{"a":1}]}""" -> """{"items": [{"a":1}]}""",
         """{ "items": [ { "a":1,"b": 2 } ] }""" -> """{"items": [{"a":1,"b":2}]}"""
-      ).foreach {
-        case (left, right) =>
-          // note that explicit [Root] is for binding with particular codec explicitly
-          val matchResult = JsonMatchers.matchJson[Root](right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        // note that explicit [Root] is for binding with particular codec explicitly
+        val matchResult = JsonMatchers.matchJson[Root](right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
-    it("should pass even left has extra field, but skipUnexpectedFields config param is disabled") {
+    it(
+      "should pass even left has extra field, but skipUnexpectedFields config param is disabled"
+    ) {
       // note that explicit [Data] is for binding with particular codec explicitly
-      val matchResult = JsonMatchers.matchJson[Data](
-        """{"a":1,"x":1}""").apply("""{"a":1}""")
+      val matchResult =
+        JsonMatchers.matchJson[Data]("""{"a":1,"x":1}""").apply("""{"a":1}""")
       matchResult.matches shouldBe true
     }
 
@@ -138,11 +143,10 @@ class JsonMatchersSpec extends AnyFunSpec with Matchers {
       Seq(
         """[{"a":1}]""" -> """[ { "a" : 1 } ]""",
         """[]""" -> """[ ]"""
-      ).foreach {
-        case (left, right) =>
-          // note that explicit [List[Data]] is for binding with particular codec explicitly
-          val matchResult = JsonMatchers.matchJson[List[Data]](right).apply(left)
-          matchResult.matches shouldBe true
+      ).foreach { case (left, right) =>
+        // note that explicit [List[Data]] is for binding with particular codec explicitly
+        val matchResult = JsonMatchers.matchJson[List[Data]](right).apply(left)
+        matchResult.matches shouldBe true
       }
     }
 
