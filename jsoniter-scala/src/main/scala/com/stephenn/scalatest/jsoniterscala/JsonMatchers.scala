@@ -9,27 +9,34 @@ import scala.util.{Failure, Success, Try}
 
 trait JsonMatchers {
 
-  /**
-    * Checks if the given JSON objects are equivalent.
+  /** Checks if the given JSON objects are equivalent.
     */
-  def matchJson[T: JsonValueCodec : ClassTag](expected: String)(implicit diffInst: Diff[T]): Matcher[String] = {
+  def matchJson[T: JsonValueCodec: ClassTag](
+      expected: String
+  )(implicit diffInst: Diff[T]): Matcher[String] = {
     Matcher[String] { actual =>
       (parse(actual), parse(expected)) match {
         case (Left(error), _) => parseError(actual.trim, error.getMessage)
         case (_, Left(error)) => parseError(expected.trim, error.getMessage)
-        case (Right(actual), Right(expected)) => comparisonResult(actual, expected)
+        case (Right(actual), Right(expected)) =>
+          comparisonResult(actual, expected)
       }
     }
   }
 
-  private def parse[T: JsonValueCodec : ClassTag](json: String): Either[Throwable, T] = {
+  private def parse[T: JsonValueCodec: ClassTag](
+      json: String
+  ): Either[Throwable, T] = {
     Try(readFromArray(json.getBytes("UTF-8"))) match {
       case Success(parsedData) => Right(parsedData)
-      case Failure(error) => Left(error)
+      case Failure(error)      => Left(error)
     }
   }
 
-  private def parseError[T: JsonValueCodec : ClassTag](left: String, right: String) = {
+  private def parseError[T: JsonValueCodec: ClassTag](
+      left: String,
+      right: String
+  ) = {
     MatchResult(
       matches = false,
       rawFailureMessage = "Could not parse json {0} error: {1}",
@@ -38,7 +45,10 @@ trait JsonMatchers {
     )
   }
 
-  private def comparisonResult[T: JsonValueCodec : ClassTag](actual: T, expected: T)(implicit diffInst: Diff[T]) = {
+  private def comparisonResult[T: JsonValueCodec: ClassTag](
+      actual: T,
+      expected: T
+  )(implicit diffInst: Diff[T]) = {
     val diffResult = Diff.compare(actual, expected)(diffInst)
     val s = diffResult.show
     MatchResult(

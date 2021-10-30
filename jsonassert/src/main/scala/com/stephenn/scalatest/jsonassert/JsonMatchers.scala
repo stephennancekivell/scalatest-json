@@ -8,8 +8,7 @@ import org.scalatest.matchers.Matcher
 
 trait JsonMatchers {
 
-  /**
-    * Checks if the given json objects are equivalent.
+  /** Checks if the given json objects are equivalent.
     */
   def matchJson(right: String): Matcher[String] =
     Matcher[String] { left =>
